@@ -21,7 +21,9 @@ class HealthProfessional(models.Model):
         db_table = "HealthProfessional"
     
     def __str__(self):
-        return self.social_name if self.social_name else self.full_name
+        if self.social_name:
+            return f'{self.id} - {self.social_name}'
+        return f'{self.id} - {self.full_name}'
     
 class Profession(models.Model):
     id = models.AutoField(primary_key=True, db_column="ProfessionId")
@@ -36,4 +38,4 @@ class Profession(models.Model):
         db_table = "Profession"
 
     def __str__(self):
-        return self.name
+        return f'{self.id} - {self.name}'
