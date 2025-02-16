@@ -1,3 +1,4 @@
+import re
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status, permissions
 from rest_framework.response import Response
@@ -7,6 +8,7 @@ from .models import HealthProfessional, Profession
 from .serializers import HealthProfessionalSerializer, ProfessionSerializer
 from core.permissions import IsStaffUser
 from integrationsystem.external_apis.zipcode import GetZipcode
+from .validator import isTaxNumberValid
 
 class HealthProfessionalViewSet(ModelViewSet):
     queryset = HealthProfessional.objects.all()
@@ -19,10 +21,16 @@ class HealthProfessionalViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         with dbTransaction.atomic():
             try:
+                
+                taxnumber_validate = isTaxNumberValid(request.data['taxnumber'])
+                if isinstance(taxnumber_validate, dict) and not taxnumber_validate.get('success', False):
+                    return Response(taxnumber_validate, taxnumber_validate['status_code'])
+                request.data['taxnumber'] = re.sub("[^0-9]",'',request.data['taxnumber'])
+                
                 zipcode_response = GetZipcode(request.data['zipcode'])
-
                 if not zipcode_response['success']:
-                    return Response(zipcode_response, status.HTTP_404_NOT_FOUND)
+                    return Response(zipcode_response, zipcode_response['status_code'])
+                request.data['zipcode'] = re.sub("[^0-9]",'',request.data['zipcode'])
 
             
                 zipcode_data = zipcode_response['data']
