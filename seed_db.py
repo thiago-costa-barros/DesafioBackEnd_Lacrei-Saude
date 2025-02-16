@@ -1,14 +1,16 @@
-import time
 import requests
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def SeedDb():
     BASE_URL = "http://127.0.0.1:8000/api"  
     
     # Credenciais do admin
     ADMIN_DATA = {
-        "username": "thiagoc.barros92",    # Username do superuser criado
-        "password": "Shelbygt500@"  # Password do superuser criado
+        "username": os.getenv("DJANGO_SUPERUSER_USERNAME"), # Username do superuser criado
+        "password": os.getenv("DJANGO_SUPERUSER_PASSWORD")  # Password do superuser criado
     }
     
     PROFESSIONS = [
@@ -108,7 +110,6 @@ def SeedDb():
                 print(f"✅ Profissão '{profession['name']}' criada! ID: {profession_id}")
             else:
                 print(f"⚠️ Erro ao criar '{profession['name']}': {response.text}")
-        time.sleep(2)
 
         # Criar profissionais de saúde
         print("\n🔹 Criando profissionais de saúde...")
