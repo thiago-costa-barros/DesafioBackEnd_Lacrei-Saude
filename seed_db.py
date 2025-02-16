@@ -13,70 +13,73 @@ def SeedDb():
     
     PROFESSIONS = [
         {
-            "name": "Médico Clínico Geral", "description": "Responsável por avaliar e diagnosticar pacientes, encaminhando para especialistas quando necessário."
-          },
-          {
-            "name": "Médico Cardiologista", "description": "Especialista no diagnóstico e tratamento de doenças do coração e sistema circulatório."
-          },
-          {
-            "name": "Médico Pediatra", "description": "Cuida da saúde de bebês, crianças e adolescentes, tratando e prevenindo doenças."
-          },
-          {
-            "name": "Médico Ginecologista", "description": "Especialista na saúde da mulher, tratando questões relacionadas ao sistema reprodutivo feminino."
-          },
-          {
-            "name": "Médico Ortopedista", "description": "Foca no diagnóstico e tratamento de problemas nos ossos, músculos e articulações."
-          },
-          {
-            "name": "Médico Neurologista", "description": "Especializado em doenças do sistema nervoso, incluindo cérebro e medula espinhal."
-          },
-          {
-            "name": "Médico Dermatologista", "description": "Cuida da saúde da pele, cabelos e unhas, tratando condições dermatológicas."
-          },
-          {
-            "name": "Médico Psiquiatra", "description": "Especialista no diagnóstico e tratamento de transtornos mentais e emocionais."
-          },
-          {
-            "name": "Médico Endocrinologista", "description": "Cuida do sistema endócrino, tratando distúrbios hormonais como diabetes e tireoide."
-          },
-          {
-            "name": "Médico Oftalmologista", "description": "Diagnostica e trata problemas relacionados à visão e aos olhos."
-          },
-          {
-            "name": "Médico Otorrinolaringologista", "description": "Trata problemas no ouvido, nariz e garganta."
-          },
-          {
-            "name": "Médico Urologista", "description": "Cuida do trato urinário e do sistema reprodutivo masculino."
-          },
-          {
-            "name": "Médico Nutrólogo", "description": "Foca no impacto da alimentação e nutrição na saúde dos pacientes."
-          },
-          {
-            "name": "Fisioterapeuta", "description": "Ajuda na recuperação e prevenção de problemas musculoesqueléticos e de mobilidade."
-          },
-          {
-            "name": "Nutricionista", "description": "Elabora planos alimentares para promover a saúde e tratar condições específicas."
-          },
-          {
-            "name": "Psicólogo", "description": "Atua na saúde mental, ajudando pacientes com transtornos emocionais e comportamentais."
-          },
-          {
-            "name": "Enfermeiro", "description": "Presta assistência a pacientes, administra medicamentos e coordena cuidados."
-          },
-          {
-            "name": "Técnico de Enfermagem", "description": "Auxilia enfermeiros no cuidado direto com os pacientes."
-          },
-          {
-            "name": "Terapeuta Ocupacional", "description": "Ajuda pacientes a desenvolverem habilidades para a vida diária e o trabalho."
-          },
-          {
-            "name": "Fonoaudiólogo", "description": "Atua no diagnóstico e tratamento de problemas de fala, audição e deglutição."
-          },
-          {
-            "name": "Assistente Social", "description": "Oferece suporte a pacientes e famílias em questões sociais e psicológicas."
-          },
-          {
-            "name": "Farmacêutico", "description": "Responsável pela dispensação e orientação sobre o uso correto de medicamentos."
+          "name": "Outros", "description": "Outras especialidades."
+        },
+        {
+          "name": "Médico Clínico Geral", "description": "Responsável por avaliar e diagnosticar pacientes, encaminhando para especialistas quando necessário."
+        },
+        {
+          "name": "Médico Cardiologista", "description": "Especialista no diagnóstico e tratamento de doenças do coração e sistema circulatório."
+        },
+        {
+          "name": "Médico Pediatra", "description": "Cuida da saúde de bebês, crianças e adolescentes, tratando e prevenindo doenças."
+        },
+        {
+          "name": "Médico Ginecologista", "description": "Especialista na saúde da mulher, tratando questões relacionadas ao sistema reprodutivo feminino."
+        },
+        {
+          "name": "Médico Ortopedista", "description": "Foca no diagnóstico e tratamento de problemas nos ossos, músculos e articulações."
+        },
+        {
+          "name": "Médico Neurologista", "description": "Especializado em doenças do sistema nervoso, incluindo cérebro e medula espinhal."
+        },
+        {
+          "name": "Médico Dermatologista", "description": "Cuida da saúde da pele, cabelos e unhas, tratando condições dermatológicas."
+        },
+        {
+          "name": "Médico Psiquiatra", "description": "Especialista no diagnóstico e tratamento de transtornos mentais e emocionais."
+        },
+        {
+          "name": "Médico Endocrinologista", "description": "Cuida do sistema endócrino, tratando distúrbios hormonais como diabetes e tireoide."
+        },
+        {
+          "name": "Médico Oftalmologista", "description": "Diagnostica e trata problemas relacionados à visão e aos olhos."
+        },
+        {
+          "name": "Médico Otorrinolaringologista", "description": "Trata problemas no ouvido, nariz e garganta."
+        },
+        {
+          "name": "Médico Urologista", "description": "Cuida do trato urinário e do sistema reprodutivo masculino."
+        },
+        {
+          "name": "Médico Nutrólogo", "description": "Foca no impacto da alimentação e nutrição na saúde dos pacientes."
+        },
+        {
+          "name": "Fisioterapeuta", "description": "Ajuda na recuperação e prevenção de problemas musculoesqueléticos e de mobilidade."
+        },
+        {
+          "name": "Nutricionista", "description": "Elabora planos alimentares para promover a saúde e tratar condições específicas."
+        },
+        {
+          "name": "Psicólogo", "description": "Atua na saúde mental, ajudando pacientes com transtornos emocionais e comportamentais."
+        },
+        {
+          "name": "Enfermeiro", "description": "Presta assistência a pacientes, administra medicamentos e coordena cuidados."
+        },
+        {
+          "name": "Técnico de Enfermagem", "description": "Auxilia enfermeiros no cuidado direto com os pacientes."
+        },
+        {
+          "name": "Terapeuta Ocupacional", "description": "Ajuda pacientes a desenvolverem habilidades para a vida diária e o trabalho."
+        },
+        {
+          "name": "Fonoaudiólogo", "description": "Atua no diagnóstico e tratamento de problemas de fala, audição e deglutição."
+        },
+        {
+          "name": "Assistente Social", "description": "Oferece suporte a pacientes e famílias em questões sociais e psicológicas."
+        },
+        {
+          "name": "Farmacêutico", "description": "Responsável pela dispensação e orientação sobre o uso correto de medicamentos."
         }
     ]
     
@@ -115,7 +118,7 @@ def SeedDb():
   	                  "full_name":"Jonas Albuquerque",
   	                  "social_name":"",
   	                  "email":"teste@email.com",
-  	                  "profession":profession_ids[14],
+  	                  "profession":profession_ids[15],
   	                  "zipcode":"60.110-301",
   	                  "phone":"85988776655",
   	                  "taxnumber":"943.799.610-52"
@@ -151,7 +154,7 @@ def SeedDb():
   	                  "full_name":"Lucia Mendes",
   	                  "social_name":"",
   	                  "email":"teste@email.com",
-  	                  "profession":profession_ids[1],
+  	                  "profession":profession_ids[0],
   	                  "zipcode":"60.110-301",
   	                  "phone":"85988776655",
   	                  "taxnumber":"374.601.430-14"
