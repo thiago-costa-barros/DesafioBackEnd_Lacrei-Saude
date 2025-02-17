@@ -6,7 +6,7 @@ from django.db import transaction as dbTransaction
 from core.utils import ApiResponse
 from .models import HealthProfessional, Profession
 from .serializers import HealthProfessionalSerializer, ProfessionSerializer
-from core.permissions import IsStaffUser
+from core.permissions import IsStaffUser, IsOwnerOrSuperUser
 from integrationsystem.external_apis.zipcode import GetZipcode
 from .validator import isTaxNumberValid
 
@@ -16,7 +16,7 @@ class HealthProfessionalViewSet(ModelViewSet):
 
     def get_permissions(self):
         """Apenas usuários autenticados podem acessar"""
-        return [permissions.IsAuthenticated()]
+        return [permissions.IsAuthenticated(),IsOwnerOrSuperUser()]
     
     def create(self, request, *args, **kwargs):
         with dbTransaction.atomic():
