@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'users',
     'professionals',
+    'appointments',
     'integrationsystem'
 ]
 
