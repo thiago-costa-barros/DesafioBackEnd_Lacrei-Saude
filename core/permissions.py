@@ -6,17 +6,26 @@ class IsStaffUser(BasePermission):
     """
 
     def has_permission(self, request, view):
+        """
+            Verifica se o usuário está autenticado e permite requisições GET e POST.
+            Para métodos GET, basta estar autenticado.
+            Para demais métodos, precisa ser is_staff true
+        """
         if request.method in SAFE_METHODS:  
             return request.user.is_authenticated  
         return request.user.is_authenticated and request.user.is_staff
     
     def has_object_permission(self, request, view, obj):
-        """Permissão para métodos específicos em um objeto"""
+        """
+            Permissão para métodos específicos em um objeto
+            Para métodos GET, basta estar autenticado.
+            Para demais métodos, precisa ser is_staff true
+        """
         if request.method in SAFE_METHODS:
-            return request.user.is_authenticated  # Qualquer um pode visualizar
+            return request.user.is_authenticated  
         
         if request.user.is_staff:
-            return True  # Staff pode tudo
+            return True 
     
 class IsOwnerOrSuperUser(BasePermission):
     """
@@ -25,15 +34,25 @@ class IsOwnerOrSuperUser(BasePermission):
     """
     
     def has_permission(self, request, view):
-        """Verifica se o usuário está autenticado e permite requisições GET e POST."""
-        return request.user.is_authenticated
+        """
+            Verifica se o usuário está autenticado e permite requisições GET e POST.
+            Para métodos GET, basta estar autenticado.
+            Para demais métodos, precisa ser superUser
+        """
+        if request.method in SAFE_METHODS:  
+            return request.user.is_authenticated  
+        return request.user.is_authenticated and request.user.is_superuser
 
     def has_object_permission(self, request, view, obj):
-        """Permissão para métodos específicos em um objeto"""
+        """
+            Permissão para métodos específicos em um objeto
+            Para métodos GET, basta estar autenticado.
+            Para demais métodos, somente se for um objeto criado por aquele user ou se for superUser
+        """
         if request.method in SAFE_METHODS:
-            return request.user.is_authenticated  # Qualquer um pode visualizar
+            return request.user.is_authenticated  
         
         if request.user.is_superuser:
-            return True  # Superuser pode tudo
+            return True
         
-        return obj.creation_user_id == request.user  # Apenas o criador pode editar ou excluir
+        return obj.creation_user_id == request.user 
