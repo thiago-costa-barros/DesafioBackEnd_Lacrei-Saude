@@ -39,9 +39,7 @@ class IsOwnerOrSuperUser(BasePermission):
             Para métodos GET, basta estar autenticado.
             Para demais métodos, precisa ser superUser
         """
-        if request.method in SAFE_METHODS:  
-            return request.user.is_authenticated  
-        return request.user.is_authenticated and request.user.is_superuser
+        return request.user.is_authenticated  
 
     def has_object_permission(self, request, view, obj):
         """
@@ -49,10 +47,7 @@ class IsOwnerOrSuperUser(BasePermission):
             Para métodos GET, basta estar autenticado.
             Para demais métodos, somente se for um objeto criado por aquele user ou se for superUser
         """
-        if request.method in SAFE_METHODS:
-            return request.user.is_authenticated  
+        if request.method in SAFE_METHODS:  # GET, HEAD, OPTIONS
+            return request.user.is_superuser or obj.creation_user_id == request.user
         
-        if request.user.is_superuser:
-            return True
-        
-        return obj.creation_user_id == request.user 
+        return request.user.is_superuser or obj.creation_user_id == request.user

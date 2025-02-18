@@ -38,7 +38,7 @@ class UserViewSet(ModelViewSet):
                 }
 
                 return Response(ApiResponse(
-                        sucess= True,
+                        success= True,
                         status_code= status.HTTP_201_CREATED,
                         message= "Usuário criado",
                         payload=user_data)
@@ -51,7 +51,7 @@ class UserViewSet(ModelViewSet):
                 else:
                     error_details = str(e)  # Outros erros inesperados
                 return Response(ApiResponse(
-                        sucess= False,
+                        success= False,
                         status_code= status.HTTP_400_BAD_REQUEST,
                         message="Erro ao criar usuário",
                         error=error_details,

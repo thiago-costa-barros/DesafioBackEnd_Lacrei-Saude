@@ -18,11 +18,11 @@ class HealthProfessionalViewSet(ModelViewSet):
         """Apenas usuários autenticados podem acessar"""
         return [permissions.IsAuthenticated(),IsOwnerOrSuperUser()]
     
-    def get_queryset(self):
-        """Superusuário vê tudo, usuários comuns só veem seus próprios registros"""
-        if self.request.user.is_superuser:
-            return HealthProfessional.objects.all()
-        return HealthProfessional.objects.filter(creation_user_id=self.request.user)
+    # def get_queryset(self):
+    #     """Superusuário vê tudo, usuários comuns só veem seus próprios registros"""
+    #     if self.request.user.is_superuser:
+    #         return HealthProfessional.objects.all()
+    #     return HealthProfessional.objects.filter(creation_user_id=self.request.user)
     
     def create(self, request, *args, **kwargs):
         with dbTransaction.atomic():
@@ -68,14 +68,14 @@ class HealthProfessionalViewSet(ModelViewSet):
                 }
                 payload = response_data
                 return Response(ApiResponse(
-                    sucess= True,
+                    success= True,
                     status_code= status.HTTP_201_CREATED,
                     message= "Profissional criado",
                     payload=payload)
                     , status.HTTP_201_CREATED)
             except Exception as e:
                 return Response(ApiResponse(
-                    sucess= False,
+                    success= False,
                     status_code= status.HTTP_400_BAD_REQUEST,
                     message="Erro ao criar profissional",
                     error=str(e))
@@ -96,14 +96,14 @@ class ProfessionViewSet(ModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 return Response(ApiResponse(
-                    sucess= True,
+                    success= True,
                     status_code= status.HTTP_201_CREATED,
                     message= "Profissão criada",
                     payload=serializer.data)
                     , status.HTTP_201_CREATED)
             except Exception as e:
                 return Response(ApiResponse(
-                    sucess= False,
+                    success= False,
                     status_code= status.HTTP_400_BAD_REQUEST,
                     message="Erro ao criar profissão",
                     error=str(e))
