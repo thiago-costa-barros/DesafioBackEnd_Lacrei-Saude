@@ -4,12 +4,12 @@ from django.conf import settings
 # Create your models here.
 class Appointment(models.Model):
     id = models.AutoField(primary_key=True, db_column="AppointmentId")
-    health_professional = models.ForeignKey('professionals.HealthProfessional', on_delete=models.CASCADE, db_column="HealthProfessionalId")
-    patient_name = models.CharField(max_length=255, db_column="PatientName")
-    patient_phone = models.CharField(max_length=20,  db_column="PatientPhone")
-    patient_email = models.EmailField(max_length=100,  db_column="PatientEmail")
-    appointment_date = models.DateField(db_column="AppointmentDate")
-    appointment_time = models.TimeField(db_column="AppointmentTime")
+    health_professional = models.ForeignKey('professionals.HealthProfessional',null=False, on_delete=models.CASCADE, db_column="HealthProfessionalId")
+    patient_name = models.CharField(max_length=255,null=False, db_column="PatientName")
+    patient_phone = models.CharField(max_length=20, null=False, db_column="PatientPhone")
+    patient_email = models.EmailField(max_length=100,null=False,  db_column="PatientEmail")
+    appointment_date = models.DateField(null=False,db_column="AppointmentDate")
+    appointment_time = models.TimeField(null=False,db_column="AppointmentTime")
     created_at = models.DateTimeField(auto_now_add=True, db_column="CreationDate")
     updated_at = models.DateTimeField(auto_now=True, db_column="UpdateDate")
     deleted_at = models.DateTimeField(null=True, blank=True, db_column="DeletionDate")
