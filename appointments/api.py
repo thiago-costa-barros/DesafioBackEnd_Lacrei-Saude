@@ -27,10 +27,18 @@ class AppointmentModelViewSet(ModelViewSet):
         
         health_professional = request.data.get("health_professional")
         appointment_date = request.data.get("appointment_date")
-        appointment_time  = request.data["appointment_time"]
-        appointment_time = datetime.strptime(appointment_time, "%H:%M:%S").time()
-        print("Tipo de appointment_time:", type(appointment_time))
-        print("Valor de appointment_time:", appointment_time)
+        try:
+            appointment_time = request.data["appointment_time"].strip()  # Limpa a string
+            appointment_time = datetime.strptime(appointment_time, "%H:%M:%S").time()
+        except ValueError as e:
+            return Response(ApiResponse(
+                success=False,
+                status_code=status.HTTP_400_BAD_REQUEST,
+                message="Erro no formato do horário.",
+                error=str(e)
+                ),status=status.HTTP_400_BAD_REQUEST
+            )
+                
         existing_appointment = Appointment.objects.filter(
             health_professional=health_professional,
             appointment_date=appointment_date,
@@ -75,10 +83,32 @@ class AppointmentModelViewSet(ModelViewSet):
                     message= "Profissional criado",
                     payload=payload)
                     , status.HTTP_201_CREATED)
-            except Exception as e:
+                
+            except IntegrityError as e:
+                dbTransaction.set_rollback(True)
                 return Response(ApiResponse(
                     success=False,
                     status_code=status.HTTP_400_BAD_REQUEST,
                     message="Erro ao criar agendamento",
                     error=str(e)
                 ), status=status.HTTP_400_BAD_REQUEST)
+            
+            except TypeError as e:
+                dbTransaction.set_rollback(True)
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    message="Erro ao criar agendamento",
+                    error=str(e)
+                ), status=status.HTTP_400_BAD_REQUEST)
+                
+            except Exception as e:
+                dbTransaction.set_rollback(True)
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    message="Erro ao criar agendamento",
+                    error=str(e)
+                ), status=status.HTTP_400_BAD_REQUEST)
+                
+            
