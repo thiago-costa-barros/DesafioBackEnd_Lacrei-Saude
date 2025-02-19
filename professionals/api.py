@@ -18,6 +18,7 @@ class HealthProfessionalViewSet(ModelViewSet):
         """Apenas usuários autenticados podem acessar"""
         return [permissions.IsAuthenticated(),IsOwnerOrSuperUser()]
     
+    
     def create(self, request, *args, **kwargs):
         with dbTransaction.atomic():
             try:
@@ -62,14 +63,14 @@ class HealthProfessionalViewSet(ModelViewSet):
                 }
                 payload = response_data
                 return Response(ApiResponse(
-                    sucess= True,
+                    success= True,
                     status_code= status.HTTP_201_CREATED,
                     message= "Profissional criado",
                     payload=payload)
                     , status.HTTP_201_CREATED)
             except Exception as e:
                 return Response(ApiResponse(
-                    sucess= False,
+                    success= False,
                     status_code= status.HTTP_400_BAD_REQUEST,
                     message="Erro ao criar profissional",
                     error=str(e))
@@ -90,14 +91,14 @@ class ProfessionViewSet(ModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 return Response(ApiResponse(
-                    sucess= True,
+                    success= True,
                     status_code= status.HTTP_201_CREATED,
                     message= "Profissão criada",
                     payload=serializer.data)
                     , status.HTTP_201_CREATED)
             except Exception as e:
                 return Response(ApiResponse(
-                    sucess= False,
+                    success= False,
                     status_code= status.HTTP_400_BAD_REQUEST,
                     message="Erro ao criar profissão",
                     error=str(e))

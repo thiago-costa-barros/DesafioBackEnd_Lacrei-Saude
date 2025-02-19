@@ -24,7 +24,7 @@ def custom_exception_handler(exc, context):
         error_detail = response.data.get("detail", "Ocorreu um erro inesperado.")
 
         response.data = ApiResponse(
-            sucess=False,
+            success=False,
             status_code=status_code,
             message=default_message,
             error=error_detail
