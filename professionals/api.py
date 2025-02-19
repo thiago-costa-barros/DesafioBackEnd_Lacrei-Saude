@@ -18,11 +18,6 @@ class HealthProfessionalViewSet(ModelViewSet):
         """Apenas usuários autenticados podem acessar"""
         return [permissions.IsAuthenticated(),IsOwnerOrSuperUser()]
     
-    # def get_queryset(self):
-    #     """Superusuário vê tudo, usuários comuns só veem seus próprios registros"""
-    #     if self.request.user.is_superuser:
-    #         return HealthProfessional.objects.all()
-    #     return HealthProfessional.objects.filter(creation_user_id=self.request.user)
     
     def create(self, request, *args, **kwargs):
         with dbTransaction.atomic():

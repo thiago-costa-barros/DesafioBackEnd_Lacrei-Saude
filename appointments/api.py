@@ -9,6 +9,7 @@ from django.db import IntegrityError, transaction as dbTransaction
 from django.shortcuts import get_object_or_404
 from professionals.models import HealthProfessional, Profession
 from datetime import datetime
+from django.utils.html import escape
 
 class AppointmentModelViewSet(ModelViewSet):
     queryset = Appointment.objects.all()
@@ -24,12 +25,22 @@ class AppointmentModelViewSet(ModelViewSet):
         return Appointment.objects.filter(creation_user_id=self.request.user)
     
     def create(self, request, *args, **kwargs):
-        
-        health_professional = request.data.get("health_professional")
-        appointment_date = request.data.get("appointment_date")
+
         try:
-            appointment_time = request.data["appointment_time"].strip()  # Limpa a string
+            health_professional = escape(request.data.get("health_professional",""))
+            appointment_date = escape(request.data.get("appointment_date", "").strip())
+            appointment_time = escape(request.data.get("appointment_time", "").strip())
+            
+            if not health_professional or not appointment_date or not appointment_time:
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    message="Dados inválidos: Campos obrigatórios ausentes.",
+                    error="Preencha todos os campos corretamente."
+                ), status=status.HTTP_400_BAD_REQUEST)
+            
             appointment_time = datetime.strptime(appointment_time, "%H:%M:%S").time()
+            
         except ValueError as e:
             return Response(ApiResponse(
                 success=False,
@@ -61,7 +72,7 @@ class AppointmentModelViewSet(ModelViewSet):
                 
                 response_data = dict(serializer.data)
                                 
-                health_professional_id = response_data.get('health_professional')
+                health_professional_id = escape(response_data.get('health_professional'))
                 health_professional_obj = get_object_or_404(HealthProfessional, id=health_professional_id)
 
                 
@@ -80,7 +91,7 @@ class AppointmentModelViewSet(ModelViewSet):
                 return Response(ApiResponse(
                     success= True,
                     status_code= status.HTTP_201_CREATED,
-                    message= "Profissional criado",
+                    message= "Agendamento Realizado",
                     payload=payload)
                     , status.HTTP_201_CREATED)
                 
