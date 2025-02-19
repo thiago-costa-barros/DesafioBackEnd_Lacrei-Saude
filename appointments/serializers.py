@@ -1,7 +1,19 @@
 from rest_framework import serializers
 from .models import Appointment
+from professionals.models import HealthProfessional, Profession
 from django.conf import settings
 from datetime import time
+
+class ProfessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profession
+        fields = ['name']
+
+class HealthProfessionalSerializer(serializers.ModelSerializer):
+    profession = ProfessionSerializer(read_only=True)
+    class Meta:
+        model = HealthProfessional
+        fields = ['id', 'full_name', 'profession', 'phone', 'email']
 
 class PatientSerializer(serializers.Serializer):
     patient_name = serializers.CharField()
@@ -12,6 +24,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     creation_user_id = serializers.HiddenField(default=serializers.CurrentUserDefault())
     update_user_id = serializers.HiddenField(default=serializers.CurrentUserDefault())
     patient = PatientSerializer(source='*', read_only=True)
+    health_professional = serializers.PrimaryKeyRelatedField(queryset=HealthProfessional.objects.all(), write_only=True)
     
     class Meta:
         model = Appointment
@@ -24,6 +37,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
         representation.pop('patient_name', None)
         representation.pop('patient_phone', None)
         representation.pop('patient_email', None)
+        
+        representation['health_professional'] = HealthProfessionalSerializer(instance.health_professional).data
         
         # O campo 'patient' já estará configurado
         return representation

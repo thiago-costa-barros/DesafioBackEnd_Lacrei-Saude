@@ -68,6 +68,10 @@ class AppointmentModelViewSet(ModelViewSet):
                 # Usar o serializer para salvar o HealthProfessional
                 serializer = self.get_serializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
+                if serializer.is_valid():
+                    serializer.save(health_professional_id=request.data.get('health_professional'))
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                 serializer.save()
                 
                 response_data = dict(serializer.data)
