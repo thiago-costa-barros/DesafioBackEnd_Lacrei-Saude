@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.serializers import ValidationError
 from .models import Appointment
 from .serializers import AppointmentSerializer
 from rest_framework import status, permissions
@@ -37,6 +38,15 @@ class AppointmentModelViewSet(ModelViewSet):
                     status_code=status.HTTP_400_BAD_REQUEST,
                     message="Dados inválidos: Campos obrigatórios ausentes.",
                     error="Preencha todos os campos corretamente."
+                ), status=status.HTTP_400_BAD_REQUEST)
+            try:
+                appointment_date = datetime.strptime(appointment_date, "%Y-%m-%d").date()
+            except ValueError:
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    message="Formato de data inválido",
+                    error="A data deve estar no formato YYYY-MM-DD."
                 ), status=status.HTTP_400_BAD_REQUEST)
             
             appointment_time = datetime.strptime(appointment_time, "%H:%M:%S").time()
@@ -98,7 +108,16 @@ class AppointmentModelViewSet(ModelViewSet):
                     message= "Agendamento Realizado",
                     payload=payload)
                     , status.HTTP_201_CREATED)
-                
+        
+            except ValidationError as e:
+                dbTransaction.set_rollback(True)
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    message="Erro de validação",
+                    error=str(e)
+                ), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            
             except IntegrityError as e:
                 dbTransaction.set_rollback(True)
                 return Response(ApiResponse(

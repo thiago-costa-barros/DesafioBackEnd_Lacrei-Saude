@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Appointment
 from professionals.models import HealthProfessional, Profession
 from django.conf import settings
-from datetime import time
+from datetime import datetime, date, time
 
 class ProfessionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,10 +43,37 @@ class AppointmentSerializer(serializers.ModelSerializer):
         # O campo 'patient' já estará configurado
         return representation
     
+    def validate_appointment_date(self, appointment_date):
+        """Valida se a data do agendamento não está no passado."""
+        today = date.today()
+        try:
+            if isinstance(appointment_date, str):
+                appointment_date = datetime.strptime(appointment_date, "%Y-%m-%d").date()
+        except ValueError:
+            raise serializers.ValidationError("A data deve estar no formato YYYY-MM-DD.")
+        
+        if appointment_date < today:
+            raise serializers.ValidationError("A data do agendamento não pode estar no passado.")
+        return appointment_date
+    
     def validate_appointment_time(self, appointment_time):
-        """Validação do horário no serializer"""
+        """Valida se o horário está dentro do intervalo permitido e se não está no passado para hoje."""
+        now_time = datetime.now().time()
+        
         if not (time(8, 0, 0) <= appointment_time <= time(19, 0, 0)):
             raise serializers.ValidationError("O horário deve estar entre 08:00 e 19:00.")
+        
+        request_data = self.initial_data  # Pegamos os dados da requisição
+        appointment_date = request_data.get("appointment_date")
+        
+        if appointment_date:
+            try:
+                appointment_date = datetime.strptime(appointment_date, "%Y-%m-%d").date()
+                if appointment_date == date.today() and appointment_time <= now_time:
+                    raise serializers.ValidationError("O horário do agendamento não pode estar no passado.")
+            except ValueError:
+                raise serializers.ValidationError("Formato de data inválido. Use o formato YYYY-MM-DD.")
+
         return appointment_time
     
     def update(self, instance, validated_data):
