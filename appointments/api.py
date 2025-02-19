@@ -29,6 +29,26 @@ class AppointmentModelViewSet(ModelViewSet):
 
         try:
             health_professional = escape(request.data.get("health_professional",""))
+            #Check if health_professional is a string
+            if not health_professional.isdigit():
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    message="Erro no formato do profissional",
+                    error="O ID do profissional deve ser um número inteiro."
+                ), status=status.HTTP_400_BAD_REQUEST)
+
+            health_professional = int(health_professional)  # Converte para inteiro após validação
+
+            # Verifique aqui se o HealthProfessional realmente existe
+            if not HealthProfessional.objects.filter(id=health_professional).exists():
+                return Response(ApiResponse(
+                    success=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    message="Profissional não encontrado.",
+                    error=f"Não foi encontrado um profissional com Id {health_professional}."
+                ), status=status.HTTP_400_BAD_REQUEST)
+            
             appointment_date = escape(request.data.get("appointment_date", "").strip())
             appointment_time = escape(request.data.get("appointment_time", "").strip())
             
@@ -111,11 +131,12 @@ class AppointmentModelViewSet(ModelViewSet):
         
             except ValidationError as e:
                 dbTransaction.set_rollback(True)
+                error_details = {field: [str(err) for err in errors] for field, errors in e.detail.items()}
                 return Response(ApiResponse(
                     success=False,
                     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                     message="Erro de validação",
-                    error=str(e)
+                    error=error_details
                 ), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             
             except IntegrityError as e:
