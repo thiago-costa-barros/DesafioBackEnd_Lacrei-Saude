@@ -2,10 +2,11 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../dotenv_files/.env"))
+load_dotenv(dotenv_path)
 
 def SeedDb():
-    BASE_URL = "http://127.0.0.1:8000/api"  
+    BASE_URL = "http://localhost:8000/api"  
     
     # Credenciais do admin
     ADMIN_DATA = {
@@ -87,6 +88,7 @@ def SeedDb():
     
     try:
         print("\n🔹 Obtendo token de autenticação...")
+        print(f"🔹 Usuário: {ADMIN_DATA['username']}")
         login_response = requests.post(f"{BASE_URL}/token/", json={
             "username": ADMIN_DATA["username"],
             "password": ADMIN_DATA["password"]

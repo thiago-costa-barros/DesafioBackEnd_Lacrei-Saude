@@ -15,8 +15,13 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# /data/web/static e /data/web/web
+DATA_DIR = BASE_DIR.parent / 'data' / 'web'
+
 
 RUNSERVER_PORT = "8000"
 
@@ -24,12 +29,15 @@ RUNSERVER_PORT = "8000"
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ya74gm@_@$+-1oib4jvgm8^2d&msah+^v6$5t$6f32@)$$#0d0'
+SECRET_KEY = os.getenv('SECRET_KEY', 'change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG',0)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',')
+    if h.strip()
+]
 
 
 # Application definition
@@ -91,17 +99,16 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-load_dotenv()
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("SUPABASE_dbname"),
-        'USER': os.getenv("SUPABASE_user"),
-        'PASSWORD': os.getenv("SUPABASE_password"),
-        'HOST': os.getenv("SUPABASE_host"),
-        'PORT': os.getenv("SUPABASE_port"),
-        
+        'ENGINE': os.getenv('DB_ENGINE', 'change-me'),
+        'NAME': os.getenv('POSTGRES_DB', 'change-me'),
+        'USER': os.getenv('POSTGRES_USER', 'change-me'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'change-me'),
+        'HOST': os.getenv('POSTGRES_HOST', 'change-me'),
+        'PORT': os.getenv('POSTGRES_PORT', 'change-me'),
     }
 }
 
@@ -158,7 +165,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = DATA_DIR / 'static'
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = DATA_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

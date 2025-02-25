@@ -50,4 +50,4 @@ class IsOwnerOrSuperUser(BasePermission):
         if request.method in SAFE_METHODS:  # GET, HEAD, OPTIONS
             return request.user.is_superuser or obj.creation_user_id == request.user
         
-        return request.user.is_superuser or obj.creation_user_id == request.user
+        return request.user.is_superuser or obj.creation_user_id == request.user 
