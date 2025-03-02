@@ -13,14 +13,14 @@ def GetZipcode(zipcode: str):
         return {
             "success": False, 
             "status_code": 400, 
-            "message": "Erro ao consultar CEP", 
-            "error": str(http_err)
+            "message": f"Erro ao consultar CEP: {regex_zipcode}", 
+            "error": "Verifique o CEP informado"
             }
     except requests.exceptions.RequestException as err:
         return {
             "success": False, 
             "status_code": 400, 
-            "message": "Erro ao consultar CEP", 
+            "message": f"Erro ao consultar CEP: {regex_zipcode}", 
             "error": str(err)
             }
 

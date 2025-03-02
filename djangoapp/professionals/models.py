@@ -14,7 +14,7 @@ class HealthProfessional(models.Model):
     state = models.CharField(max_length=100, db_column="State")
     phone = models.CharField(max_length=20,null=False, db_column="Phone")
     email = models.EmailField(max_length=100,null=False, db_column="Email")
-    taxnumber = models.CharField(max_length=20,unique=True,error_messages={"unique": "Um usuário com esse CNPJ já existe."}, db_column="TaxNumber")
+    taxnumber = models.CharField(max_length=20,unique=True,error_messages={"unique": "Um profissional com esse CPF já existe."}, db_column="TaxNumber")
     created_at = models.DateTimeField(auto_now_add=True, db_column="CreationDate")
     updated_at = models.DateTimeField(auto_now=True, db_column="UpdateDate")
     deleted_at = models.DateTimeField(null=True, blank=True, db_column="DeletionDate")

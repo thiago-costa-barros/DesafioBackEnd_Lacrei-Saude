@@ -34,15 +34,6 @@ def isTaxNumberValid(taxNumber):
                     "error": "CPF informado não é válido"
                     }
     
-    # Checks if string has 11 characters
-    if len(taxNumber) != 11:
-        return {
-                    "success": False, 
-                    "status_code": HTTP_400_BAD_REQUEST, 
-                    "message": f"CPF informado precisa ter 11 caracteres: {taxNumber}", 
-                    "error": "CPF informado precisa ter 11 caracteres"
-                    }
-    
     sum = 0
     weight = 10
 
@@ -81,6 +72,6 @@ def isTaxNumberValid(taxNumber):
     return {
                     "success": False, 
                     "status_code": HTTP_400_BAD_REQUEST, 
-                    "message": f"CPF informado precisa ter 11 caracteres: {taxNumber}", 
-                    "error": "CPF informado precisa ter 11 caracteres"
+                    "message": f"CPF informado não é válido: {taxNumber}", 
+                    "error": "CPF informado não é válido"
                     }
