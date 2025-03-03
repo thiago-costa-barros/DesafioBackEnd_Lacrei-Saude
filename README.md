@@ -11,7 +11,7 @@ Esta API de agendamentos foi desenvolvida utilizando Django e Django Rest Framew
 - **Autenticação:** SimpleJWT
 - **Banco de Dados:** PostgreSQL
 - **Gerenciamento de Containers:** Docker + Docker Compose
-- **Documentação:** [Postman](https://www.postman.com/payload-geoscientist-29045431/desafiobackend-sistemaagendamentodjango/documentation/bdfsm9f/api-documentation-appointment-system-with-django)
+- **Documentação:** [Postman](https://documenter.getpostman.com/view/28722501/2sAYdinpKr)
 
 ---
 
