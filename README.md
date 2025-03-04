@@ -58,7 +58,7 @@ docker-compose up --build
 
 ### 4. Criar um Superusuário do Django
 ```sh
-docker-compose run djangoapp python manage.py createsuperuser
+docker-compose exec djangoapp python manage.py createsuperuser
 ```
 ➡️ **Utilize o mesmo username e password configurados no `.env`**
 
